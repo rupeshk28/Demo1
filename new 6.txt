@@ -1,0 +1,20 @@
+SELECT
+ x . dispositioncode into itemName
+FROM
+(SELECT
+case when count(f.DispositionCode) = 1 then  f . DispositionCode  = null
+else  f . DispositionCode  end AS  dispositioncode ,
+ f . FeedbackDate  AS  feedbackdate ,
+acc.agreementid
+
+FROM
+( loanaccounts   acc 
+LEFT JOIN  feedback   f  ON (( f . AccountId  =  acc . Id )))
+where acc.agreementid = itemId  and f.DispositionCode is not null
+ORDER BY  f . FeedbackDate  DESC
+LIMIT 2)  x 
+ORDER BY  x . feedbackdate 
+LIMIT 1;
+
+RETURN itemName;
+END
